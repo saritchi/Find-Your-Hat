@@ -22,6 +22,20 @@ class Field {
         });
     }
 
+    checkInput(input) {
+        const validInput = ['u', 'd', 'r', 'l', 'U', 'D', 'R', 'L'];
+        if(validInput.includes(input)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // move(direction) {
+    //     if(direction === 'u' || direction ==='U'){
+    //         this.
+    //     }
+    // }
 
 }
 
@@ -36,5 +50,5 @@ myField.print();
 let playing = true;
 while(playing) {
     const direction = prompt('Which Way? ');
-    console.log(`Hi there ${direction}`)
+    myField.checkInput(direction)
 }
