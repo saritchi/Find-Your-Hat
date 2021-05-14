@@ -49,7 +49,7 @@ class Field {
 
     check_xy() {
         // Returning False implies the game is over (win/lose).
-        if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= height) {
+        if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= this._height) {
             console.log(`Input is out of bounds. You lose!`);
             return false;
         } else if(this._board[this._x_pos][this._y_pos] === hole) {
@@ -58,14 +58,14 @@ class Field {
         } else if(this._board[this._x_pos][this._y_pos] === hat) {
             console.log(`You found your hat. You win!`);
             return false;
-        } else {
+        } else if(this._board[this._x_pos][this._y_pos] === fieldCharacter){
             this.update();
             return true;
         }
     }
 
     update() {
-        this._board[this._x_pos][this._y_pos] = fieldCharacter;
+        this._board[this._x_pos][this._y_pos] = pathCharacter;
     }
 }
 
@@ -76,11 +76,13 @@ const myField = new Field([
   ]);
 
 
-myField.print();
+console.log(myField._height)
+console.log(myField._width)
 let playing = true;
 while(playing) {
+    myField.print();
     const direction = prompt('Which Way? ');
-    // if(myField.checkInput(direction)){
-    //     playing = myField.move(direction);
-    // }
+    if(myField.checkInput(direction)){
+        playing = myField.move(direction);
+    }
 }
