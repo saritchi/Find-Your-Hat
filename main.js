@@ -14,7 +14,7 @@ const maze_solver_bfs = (field, xy) => {
         })
         bfs_field.push(set)
     })
-    
+
     let x_pos = xy[1];
     let y_pos = xy[0];
     const queue = [];
@@ -45,6 +45,7 @@ const maze_solver_bfs = (field, xy) => {
         }
 
     } while(queue.length !== 0)
+    console.log("Bad seed regenerating")
     return true;
 }
 
@@ -61,8 +62,9 @@ class Field {
         const tiles = [hat, pathCharacter]
         const area = height * width;
         const totalHoles = Math.floor(area * (percentage/100));
-        const field = [];
+        let field = [];
         do {
+            field = [];
             let placedHoles = 0;
             for(let i=2; i<area; i++){
                 if(placedHoles < totalHoles) {
@@ -84,7 +86,7 @@ class Field {
                 }
                 field.push(row)
             }
-            console.log(field)
+            // console.log(field)
         } while(maze_solver_bfs(field, this.startPos(field)))
 
         return field;
@@ -156,14 +158,52 @@ class Field {
 }
 
 
-const b = Field.generateField(3, 3, 50);
+console.log('Welcome to Find Your Hat!')
+let rows;
+while(true) {
+    rows = prompt('How many rows? [3 - 20] ')
+    if(rows <= 20 || rows > 2){
+        break;
+    } else{
+        console.log('Incorrect option.')
+    }
+}
+
+let columns;
+while(true) {
+    columns = prompt('How many columns? [3 - 20] ')
+    if(columns <= 20 || columns > 2){
+        break;
+    } else{
+        console.log('Incorrect option.')
+    }
+}
+
+let percentage;
+while(true){
+    const difficulty = prompt('Difficulty? (Easy [e], medium [m], hard [h]) ')
+    if(difficulty === 'e'){
+        percentage = 12;
+        break;
+    } else if(difficulty === 'm') {
+        percentage = 25;
+        break;
+    } else if(difficulty === 'h') {
+        percentage = 50;
+        break;
+    } else {
+        console.log('Incorrect option.')
+    }
+}
+
+const b = Field.generateField(rows, columns, percentage);
 let coordinates = Field.startPos(b);
 const myField = new Field(b, coordinates);
 
 let playing = true;
 while(playing) {
     myField.print();
-    const direction = prompt('Which Way? ');
+    const direction = prompt('Which Way? Up [u], Right [r], Down [d], Left [l] ');
     if(myField.checkInput(direction)){
         playing = myField.move(direction);
     }
