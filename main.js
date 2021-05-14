@@ -5,6 +5,7 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
+// Maze solver using Breadth-First Search to ensure maze is solvable before user plays.
 const maze_solver_bfs = (field, xy) => {
     let bfs_field = [];
     field.forEach(row => {
@@ -45,7 +46,6 @@ const maze_solver_bfs = (field, xy) => {
         }
 
     } while(queue.length !== 0)
-    console.log("Bad seed regenerating")
     return true;
 }
 
@@ -59,12 +59,12 @@ class Field {
     }
 
     static generateField(height, width, percentage) {
-        const tiles = [hat, pathCharacter]
         const area = height * width;
         const totalHoles = Math.floor(area * (percentage/100));
-        let field = [];
+        let field;
         do {
             field = [];
+            const tiles = [hat, pathCharacter]
             let placedHoles = 0;
             for(let i=2; i<area; i++){
                 if(placedHoles < totalHoles) {
@@ -86,7 +86,6 @@ class Field {
                 }
                 field.push(row)
             }
-            // console.log(field)
         } while(maze_solver_bfs(field, this.startPos(field)))
 
         return field;
