@@ -5,6 +5,49 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
+const maze_solver_bfs = (field, xy) => {
+    let bfs_field = [];
+    field.forEach(row => {
+        let set = [];
+        row.forEach(tile => {
+            set.push(tile);
+        })
+        bfs_field.push(set)
+    })
+    
+    let x_pos = xy[1];
+    let y_pos = xy[0];
+    const queue = [];
+    queue.push([bfs_field[y_pos][x_pos], y_pos, x_pos])
+    do {
+        let v = queue.shift()
+        y_pos = v[1];
+        x_pos = v[2];
+        if(v[0] === hat){
+            return false;
+        }
+        bfs_field[y_pos][x_pos] = pathCharacter;
+        // Check North
+        if(y_pos-1>=0 && bfs_field[y_pos-1][x_pos] !== hole && bfs_field[y_pos-1][x_pos] !== pathCharacter){
+            queue.push([bfs_field[y_pos-1][x_pos], y_pos-1, x_pos])
+        }
+        // Check East
+        if(x_pos+1<bfs_field[0].length && bfs_field[y_pos][x_pos+1] !== hole && bfs_field[y_pos][x_pos+1] !== pathCharacter){
+            queue.push([bfs_field[y_pos][x_pos+1], y_pos, x_pos+1])
+        }
+        // Check South
+        if(y_pos+1<bfs_field.length && bfs_field[y_pos+1][x_pos] !== hole && bfs_field[y_pos+1][x_pos] !== pathCharacter){
+            queue.push([bfs_field[y_pos+1][x_pos], y_pos+1, x_pos])
+        }
+        // Check West
+        if(x_pos-1>=0 && bfs_field[y_pos][x_pos-1] !== hole && bfs_field[y_pos][x_pos-1] !== pathCharacter){
+            queue.push([bfs_field[y_pos][x_pos-1], y_pos, x_pos-1])
+        }
+
+    } while(queue.length !== 0)
+    return true;
+}
+
 class Field {
     constructor(board, coordinates) {
         this._board = board;
@@ -17,33 +60,33 @@ class Field {
     static generateField(height, width, percentage) {
         const tiles = [hat, pathCharacter]
         const area = height * width;
-        let placedHoles = 0;
         const totalHoles = Math.floor(area * (percentage/100));
-        let max = 2;
-        for(let i=2; i<area; i++){
-            const num = Math.floor(Math.random() * max);
-            if(num === 0) {
-                tiles.push(fieldCharacter)
-            } else if(placedHoles < totalHoles){
-                placedHoles++
-                tiles.push(hole)
-                if(placedHoles === totalHoles){
-                    max = 1;
+        const field = [];
+        do {
+            let placedHoles = 0;
+            for(let i=2; i<area; i++){
+                if(placedHoles < totalHoles) {
+                    tiles.push(hole)
+                    placedHoles++
+                    
+                } else{
+                    tiles.push(fieldCharacter)
                 }
             }
-        }
-        
-        const field = [];
-        for(let i=0; i < height; i++){
-            const row = [];
-            for(let j=0; j < width; j++){
-                const index = Math.floor(Math.random() * tiles.length);
-                const tile = tiles[index]
-                row.push(tile);
-                tiles.splice(index, 1)
+            
+            for(let i=0; i < height; i++){
+                const row = [];
+                for(let j=0; j < width; j++){
+                    const index = Math.floor(Math.random() * tiles.length);
+                    const tile = tiles[index]
+                    row.push(tile);
+                    tiles.splice(index, 1)
+                }
+                field.push(row)
             }
-            field.push(row)
-        }
+            console.log(field)
+        } while(maze_solver_bfs(field, this.startPos(field)))
+
         return field;
     }
 
@@ -113,15 +156,7 @@ class Field {
 }
 
 
-
-// const myField = new Field([
-//     ['*', '░', 'O'],
-//     ['░', 'O', '░'],
-//     ['░', '^', '░'],
-//   ]);
-
-
-const b = Field.generateField(10, 10, 25);
+const b = Field.generateField(3, 3, 50);
 let coordinates = Field.startPos(b);
 const myField = new Field(b, coordinates);
 
