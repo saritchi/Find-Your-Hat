@@ -1,3 +1,5 @@
+const { terminal } = require('terminal-kit');
+
 const prompt = require('prompt-sync')({sigint: true});
 
 const hat = '^';
@@ -137,13 +139,13 @@ class Field {
     check_xy() {
         // Returning False implies the game is over (win/lose).
         if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= this._height) {
-            console.log(`Input is out of bounds. You lose!`);
+            terminal.red(`Input is out of bounds. You lose!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === hole) {
-            console.log(`You fell into a hole... You lose!`);
+            terminal.red(`You fell into a hole... You lose!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === hat) {
-            console.log(`You found your hat. You win!`);
+            terminal.green(`You found your hat. You win!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === fieldCharacter){
             this.update();
@@ -160,27 +162,27 @@ class Field {
 console.log('Welcome to Find Your Hat!')
 let rows;
 while(true) {
-    rows = prompt('How many rows? [3 - 20] ')
+    rows = prompt('How many rows? [3 - 20]: ')
     if(rows <= 20 || rows > 2){
         break;
     } else{
-        console.log('Incorrect option.')
+        terminal.red('Incorrect option.\n')
     }
 }
 
 let columns;
 while(true) {
-    columns = prompt('How many columns? [3 - 20] ')
+    columns = prompt('How many columns? [3 - 20]: ')
     if(columns <= 20 || columns > 2){
         break;
     } else{
-        console.log('Incorrect option.')
+        terminal.red('Incorrect option.\n')
     }
 }
 
 let percentage;
 while(true){
-    const difficulty = prompt('Difficulty? (Easy [e], medium [m], hard [h]) ')
+    const difficulty = prompt('Difficulty? (Easy [e], medium [m], hard [h]): ')
     if(difficulty === 'e'){
         percentage = 12;
         break;
@@ -191,7 +193,7 @@ while(true){
         percentage = 50;
         break;
     } else {
-        console.log('Incorrect option.')
+        terminal.red('Incorrect option.\n')
     }
 }
 
@@ -202,7 +204,7 @@ const myField = new Field(b, coordinates);
 let playing = true;
 while(playing) {
     myField.print();
-    const direction = prompt('Which Way? Up [u], Right [r], Down [d], Left [l] ');
+    const direction = prompt('Which Way? (Up [u], Right [r], Down [d], Left [l]): ');
     if(myField.checkInput(direction)){
         playing = myField.move(direction);
     }
