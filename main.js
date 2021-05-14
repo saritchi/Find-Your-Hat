@@ -48,6 +48,7 @@ class Field {
     }
 
     check_xy() {
+        // Returning False implies the game is over (win/lose).
         if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= height) {
             console.log(`Input is out of bounds. You lose!`);
             return false;
@@ -58,10 +59,14 @@ class Field {
             console.log(`You found your hat. You win!`);
             return false;
         } else {
-            // this.update();
+            this.update();
+            return true;
         }
     }
 
+    update() {
+        this._board[this._x_pos][this._y_pos] = fieldCharacter;
+    }
 }
 
 const myField = new Field([
@@ -75,6 +80,7 @@ myField.print();
 let playing = true;
 while(playing) {
     const direction = prompt('Which Way? ');
-    myField.checkInput(direction)
-
+    // if(myField.checkInput(direction)){
+    //     playing = myField.move(direction);
+    // }
 }
