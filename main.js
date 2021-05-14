@@ -52,20 +52,20 @@ class Field {
         if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= this._height) {
             console.log(`Input is out of bounds. You lose!`);
             return false;
-        } else if(this._board[this._x_pos][this._y_pos] === hole) {
+        } else if(this._board[this._y_pos][this._x_pos] === hole) {
             console.log(`You fell into a hole... You lose!`);
             return false;
-        } else if(this._board[this._x_pos][this._y_pos] === hat) {
+        } else if(this._board[this._y_pos][this._x_pos] === hat) {
             console.log(`You found your hat. You win!`);
             return false;
-        } else if(this._board[this._x_pos][this._y_pos] === fieldCharacter){
+        } else if(this._board[this._y_pos][this._x_pos] === fieldCharacter){
             this.update();
             return true;
         }
     }
 
     update() {
-        this._board[this._x_pos][this._y_pos] = pathCharacter;
+        this._board[this._y_pos][this._x_pos] = pathCharacter;
     }
 }
 
