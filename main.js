@@ -14,6 +14,12 @@ class Field {
         this._y_pos = 0;
     }
 
+    static generateField(height, width, percentage) {
+        percentage /= 100;
+        const totalHoles = Math.floor(height * width * percentage);
+        console.log(totalHoles)
+    }
+
     print() {
         this._board.forEach(row => {
             let string = ''
@@ -69,20 +75,22 @@ class Field {
     }
 }
 
-const myField = new Field([
-    ['*', '░', 'O'],
-    ['░', 'O', '░'],
-    ['░', '^', '░'],
-  ]);
+Field.generateField(3, 3, 25);
+
+// const myField = new Field([
+//     ['*', '░', 'O'],
+//     ['░', 'O', '░'],
+//     ['░', '^', '░'],
+//   ]);
 
 
-console.log(myField._height)
-console.log(myField._width)
-let playing = true;
-while(playing) {
-    myField.print();
-    const direction = prompt('Which Way? ');
-    if(myField.checkInput(direction)){
-        playing = myField.move(direction);
-    }
-}
+// console.log(myField._height)
+// console.log(myField._width)
+// let playing = true;
+// while(playing) {
+//     myField.print();
+//     const direction = prompt('Which Way? ');
+//     if(myField.checkInput(direction)){
+//         playing = myField.move(direction);
+//     }
+// }
