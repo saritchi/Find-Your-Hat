@@ -159,6 +159,9 @@ class Field {
 
 
 console.log('Welcome to Find Your Hat!')
+console.log('^ - Your Hat')
+console.log('* - Path Marker')
+console.log('O - Holes')
 let rows;
 while(true) {
     rows = prompt('How many rows? [3 - 20]: ')
