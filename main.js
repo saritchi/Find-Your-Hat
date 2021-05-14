@@ -1,5 +1,4 @@
-const { terminal } = require('terminal-kit');
-
+var term = require( 'terminal-kit' ).terminal ;
 const prompt = require('prompt-sync')({sigint: true});
 
 const hat = '^';
@@ -139,13 +138,13 @@ class Field {
     check_xy() {
         // Returning False implies the game is over (win/lose).
         if(this._x_pos < 0 || this._y_pos < 0 || this._x_pos >= this._width || this._y_pos >= this._height) {
-            terminal.red(`Input is out of bounds. You lose!\n`);
+            term.red(`Input is out of bounds. You lose!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === hole) {
-            terminal.red(`You fell into a hole... You lose!\n`);
+            term.red(`You fell into a hole... You lose!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === hat) {
-            terminal.green(`You found your hat. You win!\n`);
+            term.green(`You found your hat. You win!\n`);
             return false;
         } else if(this._board[this._y_pos][this._x_pos] === fieldCharacter){
             this.update();
@@ -166,7 +165,7 @@ while(true) {
     if(rows <= 20 || rows > 2){
         break;
     } else{
-        terminal.red('Incorrect option.\n')
+        term.red('Incorrect option.\n')
     }
 }
 
@@ -176,7 +175,7 @@ while(true) {
     if(columns <= 20 || columns > 2){
         break;
     } else{
-        terminal.red('Incorrect option.\n')
+        term.red('Incorrect option.\n')
     }
 }
 
@@ -193,7 +192,7 @@ while(true){
         percentage = 50;
         break;
     } else {
-        terminal.red('Incorrect option.\n')
+        term.red('Incorrect option.\n')
     }
 }
 
