@@ -6,18 +6,55 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-    constructor(board) {
+    constructor(board, coordinates) {
         this._board = board;
         this._height = board.length;
         this._width = board[0].length;
-        this._x_pos = 0;
-        this._y_pos = 0;
+        this._x_pos = coordinates[1];
+        this._y_pos = coordinates[0];
     }
 
     static generateField(height, width, percentage) {
-        percentage /= 100;
-        const totalHoles = Math.floor(height * width * percentage);
-        console.log(totalHoles)
+        const tiles = [hat, pathCharacter]
+        const area = height * width;
+        let placedHoles = 0;
+        const totalHoles = Math.floor(area * (percentage/100));
+        let max = 2;
+        for(let i=2; i<area; i++){
+            const num = Math.floor(Math.random() * max);
+            if(num === 0) {
+                tiles.push(fieldCharacter)
+            } else if(placedHoles < totalHoles){
+                placedHoles++
+                tiles.push(hole)
+                if(placedHoles === totalHoles){
+                    max = 1;
+                }
+            }
+        }
+        
+        const field = [];
+        for(let i=0; i < height; i++){
+            const row = [];
+            for(let j=0; j < width; j++){
+                const index = Math.floor(Math.random() * tiles.length);
+                const tile = tiles[index]
+                row.push(tile);
+                tiles.splice(index, 1)
+            }
+            field.push(row)
+        }
+        return field;
+    }
+
+    static startPos(field) {
+        for(let i=0; i<field.length; i++){
+            for(let j=0; j< field[0].length; j++){
+                if(field[i][j] === pathCharacter){
+                    return [i, j];
+                }
+            }
+        }
     }
 
     print() {
@@ -75,7 +112,7 @@ class Field {
     }
 }
 
-Field.generateField(3, 3, 25);
+
 
 // const myField = new Field([
 //     ['*', '░', 'O'],
@@ -84,13 +121,15 @@ Field.generateField(3, 3, 25);
 //   ]);
 
 
-// console.log(myField._height)
-// console.log(myField._width)
-// let playing = true;
-// while(playing) {
-//     myField.print();
-//     const direction = prompt('Which Way? ');
-//     if(myField.checkInput(direction)){
-//         playing = myField.move(direction);
-//     }
-// }
+const b = Field.generateField(10, 10, 25);
+let coordinates = Field.startPos(b);
+const myField = new Field(b, coordinates);
+
+let playing = true;
+while(playing) {
+    myField.print();
+    const direction = prompt('Which Way? ');
+    if(myField.checkInput(direction)){
+        playing = myField.move(direction);
+    }
+}
